@@ -16,13 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { addUser } from "@/services/libraryService";
 import { toast } from "sonner";
+import { NewUser } from "@/types/library";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  contact: z
-    .string()
-    .min(1, { message: "Contact information is required" })
-    .email({ message: "Please enter a valid email address" }),
+  contact: z.string().min(1, { message: "Contact information is required" }),
 });
 
 const AddUserForm = () => {
@@ -40,7 +38,13 @@ const AddUserForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
-      await addUser(values);
+      // Ensure all required fields are present to match the NewUser type
+      const userData: NewUser = {
+        name: values.name,
+        contact: values.contact,
+      };
+      
+      await addUser(userData);
       toast.success("User added successfully");
       navigate("/users");
     } catch (error) {
@@ -59,9 +63,9 @@ const AddUserForm = () => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter user's full name" {...field} />
+                <Input placeholder="Enter user's name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -73,13 +77,9 @@ const AddUserForm = () => {
           name="contact"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>Contact Information</FormLabel>
               <FormControl>
-                <Input 
-                  type="email"
-                  placeholder="Enter email address" 
-                  {...field} 
-                />
+                <Input placeholder="Enter contact information" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

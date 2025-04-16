@@ -1,209 +1,155 @@
 
-import { Book, BorrowHistory, User, NewUser, NewBook, NewBorrow } from "@/types/library";
+import { User, Book, BorrowHistory, NewUser, NewBook, NewBorrow } from "@/types/library";
 
-// Mock data
-let users: User[] = [
-  { user_id: 1, name: "Alice Johnson", contact: "alice@example.com" },
-  { user_id: 2, name: "Bob Smith", contact: "bob@example.com" },
-  { user_id: 3, name: "Carol Davis", contact: "carol@example.com" },
-  { user_id: 4, name: "David Wilson", contact: "david@example.com" },
-  { user_id: 5, name: "Eva Brown", contact: "eva@example.com" },
+// Mock data for users
+const mockUsers: User[] = [
+  { user_id: 1, name: "John Doe", contact: "john.doe@email.com" },
+  { user_id: 2, name: "Jane Smith", contact: "jane.smith@email.com" },
+  { user_id: 3, name: "Robert Johnson", contact: "robert.johnson@email.com" },
 ];
 
-let books: Book[] = [
-  { book_id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", genre: "Classic", available: true },
-  { book_id: 2, title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Fiction", available: false },
-  { book_id: 3, title: "1984", author: "George Orwell", genre: "Dystopian", available: true },
+// Mock data for books
+const mockBooks: Book[] = [
+  { book_id: 1, title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Fiction", available: true },
+  { book_id: 2, title: "1984", author: "George Orwell", genre: "Sci-Fi", available: false },
+  { book_id: 3, title: "The Great Gatsby", author: "F. Scott Fitzgerald", genre: "Classic", available: true },
   { book_id: 4, title: "Pride and Prejudice", author: "Jane Austen", genre: "Romance", available: true },
-  { book_id: 5, title: "The Hobbit", author: "J.R.R. Tolkien", genre: "Fantasy", available: false },
-  { book_id: 6, title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", genre: "Fantasy", available: true },
-  { book_id: 7, title: "The Catcher in the Rye", author: "J.D. Salinger", genre: "Fiction", available: true },
-  { book_id: 8, title: "Lord of the Flies", author: "William Golding", genre: "Fiction", available: true },
-  { book_id: 9, title: "Animal Farm", author: "George Orwell", genre: "Political", available: true },
-  { book_id: 10, title: "The Da Vinci Code", author: "Dan Brown", genre: "Mystery", available: true },
 ];
 
-let borrowHistory: BorrowHistory[] = [
-  { borrow_id: 1, user_id: 1, book_id: 2, borrow_date: "2024-04-01", return_date: null, returned: false },
-  { borrow_id: 2, user_id: 3, book_id: 5, borrow_date: "2024-03-15", return_date: null, returned: false },
-  { borrow_id: 3, user_id: 2, book_id: 1, borrow_date: "2024-02-20", return_date: "2024-03-10", returned: true },
-  { borrow_id: 4, user_id: 4, book_id: 3, borrow_date: "2024-01-05", return_date: "2024-01-25", returned: true },
-  { borrow_id: 5, user_id: 5, book_id: 7, borrow_date: "2024-03-01", return_date: "2024-03-20", returned: true },
+// Mock data for borrowing history
+const mockBorrowHistory: BorrowHistory[] = [
+  { 
+    borrow_id: 1, 
+    user_id: 1, 
+    book_id: 2, 
+    borrow_date: "2023-10-15", 
+    return_date: null, 
+    returned: false,
+    user: mockUsers[0],
+    book: mockBooks[1]
+  },
+  { 
+    borrow_id: 2, 
+    user_id: 3, 
+    book_id: 1, 
+    borrow_date: "2023-10-10", 
+    return_date: "2023-10-20", 
+    returned: true,
+    user: mockUsers[2],
+    book: mockBooks[0]
+  },
 ];
 
-// Helper function to generate IDs
-const generateId = (items: any[]): number => {
-  return items.length > 0 ? Math.max(...items.map(item => Object.values(item)[0])) + 1 : 1;
-};
-
-// User methods
+// Function to get all users
 export const getUsers = async (): Promise<User[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve([...users]), 300);
-  });
+  // Simulate API call delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return [...mockUsers];
 };
 
-export const getUserById = async (id: number): Promise<User | undefined> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(users.find(user => user.user_id === id)), 300);
-  });
+// Function to get a user by ID
+export const getUserById = async (userId: number): Promise<User | undefined> => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return mockUsers.find(user => user.user_id === userId);
 };
 
-export const addUser = async (newUser: NewUser): Promise<User> => {
-  const user = { ...newUser, user_id: generateId(users) };
-  users = [...users, user];
-  
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(user), 300);
-  });
+// Function to add a new user
+export const addUser = async (userData: NewUser): Promise<User> => {
+  await new Promise(resolve => setTimeout(resolve, 700));
+  const newUser: User = {
+    user_id: mockUsers.length + 1,
+    ...userData
+  };
+  mockUsers.push(newUser);
+  return newUser;
 };
 
-// Book methods
+// Function to get all books
 export const getBooks = async (): Promise<Book[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve([...books]), 300);
-  });
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return [...mockBooks];
 };
 
-export const getBookById = async (id: number): Promise<Book | undefined> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(books.find(book => book.book_id === id)), 300);
-  });
+// Function to get a book by ID
+export const getBookById = async (bookId: number): Promise<Book | undefined> => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  return mockBooks.find(book => book.book_id === bookId);
 };
 
-export const addBook = async (newBook: NewBook): Promise<Book> => {
-  const book = { ...newBook, book_id: generateId(books) };
-  books = [...books, book];
-  
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(book), 300);
-  });
+// Function to add a new book
+export const addBook = async (bookData: NewBook): Promise<Book> => {
+  await new Promise(resolve => setTimeout(resolve, 700));
+  const newBook: Book = {
+    book_id: mockBooks.length + 1,
+    ...bookData
+  };
+  mockBooks.push(newBook);
+  return newBook;
 };
 
-export const updateBookAvailability = async (id: number, available: boolean): Promise<Book | undefined> => {
-  const index = books.findIndex(book => book.book_id === id);
-  if (index === -1) return undefined;
-  
-  books[index] = { ...books[index], available };
-  
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(books[index]), 300);
-  });
+// Function to update book availability
+export const updateBookAvailability = async (bookId: number, available: boolean): Promise<Book | undefined> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const bookIndex = mockBooks.findIndex(book => book.book_id === bookId);
+  if (bookIndex !== -1) {
+    mockBooks[bookIndex].available = available;
+    return mockBooks[bookIndex];
+  }
+  return undefined;
 };
 
-// Borrow methods
+// Function to get borrowing history
 export const getBorrowHistory = async (): Promise<BorrowHistory[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Join with user and book data
-      const enrichedHistory = borrowHistory.map(borrow => ({
-        ...borrow,
-        user: users.find(user => user.user_id === borrow.user_id),
-        book: books.find(book => book.book_id === borrow.book_id)
-      }));
-      resolve(enrichedHistory);
-    }, 300);
-  });
+  await new Promise(resolve => setTimeout(resolve, 600));
+  return [...mockBorrowHistory];
 };
 
-export const getBorrowsByUserId = async (userId: number): Promise<BorrowHistory[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const userBorrows = borrowHistory
-        .filter(borrow => borrow.user_id === userId)
-        .map(borrow => ({
-          ...borrow,
-          user: users.find(user => user.user_id === borrow.user_id),
-          book: books.find(book => book.book_id === borrow.book_id)
-        }));
-      resolve(userBorrows);
-    }, 300);
-  });
-};
-
-export const addBorrow = async (newBorrow: NewBorrow): Promise<BorrowHistory> => {
-  const borrow = { 
-    ...newBorrow, 
-    borrow_id: generateId(borrowHistory),
-    returned: false
+// Function to add a new borrow record
+export const addBorrow = async (borrowData: NewBorrow): Promise<BorrowHistory> => {
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  // Find the associated user and book
+  const user = mockUsers.find(u => u.user_id === borrowData.user_id);
+  const book = mockBooks.find(b => b.book_id === borrowData.book_id);
+  
+  // Mark the book as unavailable
+  if (book) {
+    book.available = false;
+  }
+  
+  const newBorrow: BorrowHistory = {
+    borrow_id: mockBorrowHistory.length + 1,
+    ...borrowData,
+    returned: false,
+    user,
+    book
   };
   
-  borrowHistory = [...borrowHistory, borrow];
-  
-  // Update book availability
-  await updateBookAvailability(newBorrow.book_id, false);
-  
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const enrichedBorrow = {
-        ...borrow,
-        user: users.find(user => user.user_id === borrow.user_id),
-        book: books.find(book => book.book_id === borrow.book_id)
-      };
-      resolve(enrichedBorrow);
-    }, 300);
-  });
+  mockBorrowHistory.push(newBorrow);
+  return newBorrow;
 };
 
+// Function to mark a book as returned
 export const returnBook = async (borrowId: number): Promise<BorrowHistory | undefined> => {
-  const index = borrowHistory.findIndex(borrow => borrow.borrow_id === borrowId);
-  if (index === -1) return undefined;
+  await new Promise(resolve => setTimeout(resolve, 600));
   
-  const returnDate = new Date().toISOString().split('T')[0];
-  borrowHistory[index] = { 
-    ...borrowHistory[index], 
-    return_date: returnDate, 
-    returned: true 
-  };
+  const borrowIndex = mockBorrowHistory.findIndex(borrow => borrow.borrow_id === borrowId);
   
-  // Update book availability
-  await updateBookAvailability(borrowHistory[index].book_id, true);
+  if (borrowIndex !== -1) {
+    // Update borrow record
+    mockBorrowHistory[borrowIndex].returned = true;
+    mockBorrowHistory[borrowIndex].return_date = new Date().toISOString().split('T')[0];
+    
+    // Make book available again
+    const bookId = mockBorrowHistory[borrowIndex].book_id;
+    const bookIndex = mockBooks.findIndex(book => book.book_id === bookId);
+    
+    if (bookIndex !== -1) {
+      mockBooks[bookIndex].available = true;
+    }
+    
+    return mockBorrowHistory[borrowIndex];
+  }
   
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const enrichedBorrow = {
-        ...borrowHistory[index],
-        user: users.find(user => user.user_id === borrowHistory[index].user_id),
-        book: books.find(book => book.book_id === borrowHistory[index].book_id)
-      };
-      resolve(enrichedBorrow);
-    }, 300);
-  });
-};
-
-// Statistics and reports
-export const getLibraryStatistics = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const totalBooks = books.length;
-      const availableBooks = books.filter(book => book.available).length;
-      const borrowedBooks = books.filter(book => !book.available).length;
-      const totalUsers = users.length;
-      const activeLoans = borrowHistory.filter(borrow => !borrow.returned).length;
-      
-      resolve({
-        totalBooks,
-        availableBooks,
-        borrowedBooks,
-        totalUsers,
-        activeLoans
-      });
-    }, 300);
-  });
-};
-
-// Search functionality
-export const searchBooks = async (query: string): Promise<Book[]> => {
-  query = query.toLowerCase();
-  
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const results = books.filter(book => 
-        book.title.toLowerCase().includes(query) || 
-        book.author.toLowerCase().includes(query) || 
-        book.genre.toLowerCase().includes(query)
-      );
-      resolve(results);
-    }, 300);
-  });
+  return undefined;
 };

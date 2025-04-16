@@ -25,6 +25,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { addBook } from "@/services/libraryService";
 import { toast } from "sonner";
+import { NewBook } from "@/types/library";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
@@ -70,7 +71,15 @@ const AddBookForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
-      await addBook(values);
+      // Ensure all required fields are present to match the NewBook type
+      const bookData: NewBook = {
+        title: values.title,
+        author: values.author,
+        genre: values.genre,
+        available: values.available,
+      };
+      
+      await addBook(bookData);
       toast.success("Book added successfully");
       navigate("/books");
     } catch (error) {
