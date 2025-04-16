@@ -5,6 +5,7 @@ import StatCard from "@/components/dashboard/StatCard";
 import RecentBorrows from "@/components/dashboard/RecentBorrows";
 import GenreDistribution from "@/components/dashboard/GenreDistribution";
 import { getBooks, getUsers, getBorrowHistory } from "@/services/libraryService";
+import { Book, BookIcon, CheckCircle, Users, RefreshCw } from "lucide-react";
 
 interface DashboardStats {
   totalBooks: number;
@@ -65,31 +66,31 @@ const Index = () => {
             title="Total Books" 
             value={stats.totalBooks} 
             description="Total books in the library" 
-            icon="book" 
+            icon={<BookIcon size={24} />} 
           />
           <StatCard 
             title="Available Books" 
             value={stats.availableBooks} 
             description="Books ready for borrowing" 
-            icon="check-circle" 
+            icon={<CheckCircle size={24} />} 
           />
           <StatCard 
             title="Borrowed Books" 
             value={stats.borrowedBooks} 
             description="Books currently borrowed" 
-            icon="log-out" 
+            icon={<Book size={24} />} 
           />
           <StatCard 
             title="Total Members" 
             value={stats.totalUsers} 
             description="Registered library members" 
-            icon="users" 
+            icon={<Users size={24} />} 
           />
           <StatCard 
             title="Active Loans" 
             value={stats.activeLoans} 
             description="Books yet to be returned" 
-            icon="refresh-cw" 
+            icon={<RefreshCw size={24} />} 
           />
         </div>
 
